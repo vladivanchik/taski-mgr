@@ -7,8 +7,10 @@ from main import users
 app = QApplication(sys.argv)
 
 window = QMainWindow()
+
 window.setFixedSize(800, 600)
 window.setWindowTitle("Cab Manager")
+window.resize(800, 600)
 window.show()
 
 combobox = QComboBox(window)  # Создаем пустой QComboBox с родителем window
