@@ -3,11 +3,13 @@ import time, pickle
 # Функция для загрузки данных из файла
 def save_users(user):
     with open('users.pickle', 'wb') as file:
+        print("Программа записывает данные в таблицу...")
         pickle.dump(user, file)
 # Функция для загрузки данных из файла
 def load_users():
     try:
         with open('users.pickle', 'rb') as file:
+            print("Программа пытается открыть таблицу...")
             users = pickle.load(file)
     except FileNotFoundError:
         print("Программа создаст новую таблицу...")
@@ -17,7 +19,7 @@ def load_users():
 # Загрузка данных из файла
 users = load_users()
 
-"""""        
+"""""
 sel_num = input("Выберите водителя из списка: " + str(users) + "\nЧтобы перейти в режим добавление пользователей введите \"Добавить нового пользователя\"\nЧтобы перейти в режим удаления пользователя из списка введите \"Удалить\": ")
 
 time.sleep(0.5)
