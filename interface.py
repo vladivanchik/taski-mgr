@@ -1,8 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QComboBox, QDialogButtonBox, QDialog, QTextBrowser, QTextEdit
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 from main import save_users
-from main import load_users
 from main import users
 print("Программа создаёт модули...")
 
@@ -21,30 +21,36 @@ window.show()
 print("Программа создаёт параметры окна...")
 
 def adding_mode():
+    
     sign = QTextBrowser(window)
     sign.setText("Вы точно хотите добавить нового пользователя?")
     sign.show()
-    sign.setGeometry(30,80,201,51)
+    sign.setGeometry(295,200,156,31)
     sign.resize(180,40)
     print("Программа создаёт надпись и её параметры ...")
     
     button_box = QDialogButtonBox(window)
     button_box.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
     button_box.show()
-    button_box.setGeometry(45,140,156,21)
+    button_box.setGeometry(310,250,156,31)
     print("Программа создаёт кнопку действий и её параметры...")
     
     def Ok_canl(button):
         print("Программа создаёт новую функцию...")
         
         if button == button_box.button(QDialogButtonBox.Ok):
+            sign.hide()
+            print("Надпись прячется...")
+            button_box.hide()
+            print("Надпись прячется...")
             dialog = QDialog()
             dialog.resize(248,229)
             dialog.setWindowTitle("Adding Mode")
             dialog_icon = QIcon("Icon.png")
             dialog.setWindowIcon(dialog_icon)
+            dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
             print("Программа создаёт новоё окно и его параметры...")
-                
+            
             add_user_text = QTextBrowser(dialog)
             add_user_text.setText("Введите сюда имя/фамилию человека которого вы хотите сюда добавить.")
             add_user_text.setGeometry(20,0,211,51)
@@ -63,6 +69,7 @@ def adding_mode():
                 username = add_user_in_list.toPlainText()
                 print("Программа создаёт новую переменную в которой будет передана информация из add_user_in_list...")
                 if username != "":
+                    combobox.clear()
                     users.append(username)
                     print("Программа добавляет в список новую информацию...")
                     save_users(users)
@@ -99,37 +106,54 @@ def adding_mode():
                         dialog.close()                        
                         print("Диалоговое окно закрывается...")
                         
-                        sign.close()
-                        print("Надпись закрывается...")
-                        
-                        button_box.close()
-                        print("Кнопки закрываются...")
-                        
                     ok_to_close.clicked.connect(dia_close)
+                    print("Функция по закрытию кнопки активируется...")
             push_add.clicked.connect(if_but_press)
             dialog.exec_()
-                
+            
         elif button == button_box.button(QDialogButtonBox.Cancel):
             sign.close()
+            print("Надпись закрывается...")
             button_box.close()
+            print("Кнопка закрывается...")
     button_box.clicked.connect(Ok_canl)
+def del_user():     
+    del_sign = QTextBrowser(window)
+    del_sign.setText("Вы точно хотите удалить пользователя из списка?")
+    del_sign.setGeometry(295,200,156,31)
+    del_sign.resize(180,40)
+    del_sign.show()
+    print("Создаётся новая надпись, также параметры к ней...")
+    
+    del_but = QDialogButtonBox(window)
+    del_but.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+    del_but.show()
+    del_but.setGeometry(310,250,156,31)
+    del_but.show()
+    print("Программа создаёт интерактивные кнопки, а также их параметры...")
+
     
 combobox = QComboBox(window)  # Создаем пустой QComboBox с родителем window
+print("combobox создаётся...")
 combobox.setGeometry(10, 1, 351, 51)
+print("Устанавливаются параметры для combobox...")
 
 for user in users:
     combobox.addItem(user)  # Добавляем элементы из списка users в combobox
+    print("Программа добавляет элементы из списка...")
 
 add_user = QPushButton("Добавить нового пользователя", window) #Создаём кнопку которая позволяет добавить нового пользователя
 add_user.setGeometry(370, 0, 191, 51)
 add_user.clicked.connect(adding_mode)
+print("Кнопка создаётся и задаются параметры...")
     
+delete_user = QPushButton("Удалить пользователя", window)
+delete_user.setGeometry(570, 0, 211, 51)
+delete_user.clicked.connect(del_user)
+print("Кнопка создаётся и задаются параметры...")
     
-del_user = QPushButton("Удалить пользователя", window)
-del_user.setGeometry(570, 0, 211, 51)
-
 combobox.show()
 add_user.show()
-del_user.show()
+delete_user.show()
 window.show()
 sys.exit(app.exec_())
