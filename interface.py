@@ -131,6 +131,65 @@ def del_user():
     del_but.setGeometry(310,250,156,31)
     del_but.show()
     print("Программа создаёт интерактивные кнопки, а также их параметры...")
+    def ok_but(button):
+        if button == del_but.button(QDialogButtonBox.Ok):
+            del_sign.hide()
+            print("Программа прячет надпись...")
+            del_but.hide()
+            print("Программа прячет кнопки...")
+            
+            dialog2 = QDialog()
+            dialog2.resize(248,229)
+            dialog2.setWindowTitle("Adding Mode")
+            dialog_icon = QIcon("Icon.png")
+            dialog2.setWindowIcon(dialog_icon)
+            dialog2.setWindowFlags(dialog2.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+            dialog2.show()
+            print("Программа создаёт новоё окно и его параметры...")
+            
+            del_user_text = QTextBrowser(dialog2)
+            del_user_text.setText("Введите сюда имя/фамилию человека которого вы удалить из списка.")
+            del_user_text.setGeometry(20,0,211,51)
+            del_user_text.show()
+            print("Программа создаёт текстовое поле с информацией и его параметры...")
+            
+            del_user_list = QTextEdit(dialog2)
+            del_user_list.setGeometry(70,70,111,31)
+            del_user_list.show()
+            print("Программа создаёт поле для ввода и его параметры...")
+            del_button = QPushButton("Удалить из списка", dialog2)
+            del_button.setGeometry(50,130,151,23)
+            del_button.show()
+            print("Программа создаёт кнопку подтверждения и его параметры...")
+            
+            def if_but_press_to_del():
+                del_username = del_user_list.toPlainText()
+                if del_username in users:
+                    users.remove(del_username)
+                    print("Программа удаляет содержимое списка...")
+                    save_users(users)
+                    print("Программа сохраняет список...")
+                    del_user_list.clear()
+                    print("Программа очищает содержимое объекта QTextEdit...")
+                    # Получаем индекс элемента в combobox по его значению (имени пользователя)
+                    index = combobox.findText(del_username)
+                    if index != -1:
+                        combobox.removeItem(index)
+                    print("Программа обновляет информацию об списках...")
+                        
+                else:
+                    print("Пользователь не найдён в списке")
+                  
+                    
+            del_button.clicked.connect(if_but_press_to_del)
+            dialog2.exec_()
+        elif button == del_but.button(QDialogButtonBox.Cancel):
+            del_sign.close()
+            print("Программа закрывает надпись...")
+            del_but.close()
+            print("Программа закрывает кнопки...")
+        
+    del_but.clicked.connect(ok_but)
 
     
 combobox = QComboBox(window)  # Создаем пустой QComboBox с родителем window
