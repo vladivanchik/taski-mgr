@@ -90,10 +90,12 @@ def adding_mode():
                     
                     add_user_text.setText("Ошибка! Вы не ввели никаких данных, попробуйте снова")
                     print("Программа изменяет параметры для объекта add_user_text...")
+                    add_user_text.setGeometry(20,50,211,51)
+                    print("Программа применяет новое расположение функции add_user_text")
                     
-                    ok_to_close = QPushButton("Ок", dialog)
+                    ok_to_close = QPushButton("ОK", dialog)
                     print("Программа создаёт новую кнопку...")
-                    ok_to_close.setGeometry(70,55,111,31)
+                    ok_to_close.setGeometry(70,130,111,31)
                     print("Программа применяет расположение кнопки...")
                     ok_to_close.show()
                     push_add.hide()
@@ -176,11 +178,36 @@ def del_user():
                     if index != -1:
                         combobox.removeItem(index)
                     print("Программа обновляет информацию об списках...")
-                        
+                elif del_username != "" and del_username not in users:
+                    print("This feature temporary doesn't work.")
                 else:
-                    print("Пользователь не найдён в списке")
-                  
+                    print("Вы не ввели какие либо значения ")
+                    dialog2.setWindowTitle("Error")
+                    print("Программа применяет новое названия для объекта dialog2")
+                    dialog_icon2 = QIcon("Error.png")
+                    print("Программа применяет новую иконку для объекта dialog2")
+                    dialog2.setWindowIcon(dialog_icon2)
                     
+                    del_button.hide()
+                    del_user_list.hide()
+                    print("Программа прячет кнопки...")
+                    
+                    del_user_text.setText("Ошибка! Вы не ввели каких-либо значений, попробуйте снова!")
+                    del_user_text.setGeometry(20,50,211,51)
+                    
+                    ok_to_close = QPushButton("OK", dialog2)
+                    print("Программа создаёт новую кнопку...")
+                    ok_to_close.setGeometry(70,130,111,31)
+                    ok_to_close.show()
+                    print("Программа применяет новые параметры для кнопки ok_to_close")
+                    
+                    def close():
+                        print("Программа создаёт новую функцию...")
+                        
+                        dialog2.close()
+                        print("Программа закрывает диалоговое окно...")
+                    ok_to_close.clicked.connect(close)
+                    print("Вы ввели неправильное значения, удаления не произойдёт...")
             del_button.clicked.connect(if_but_press_to_del)
             dialog2.exec_()
         elif button == del_but.button(QDialogButtonBox.Cancel):
