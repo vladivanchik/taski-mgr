@@ -4,6 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from main import save_users
 from main import users
+import keyboard
 print("Программа создаёт модули...")
 
 app = QApplication(sys.argv)
@@ -19,6 +20,12 @@ window.resize(800, 600)
 window.show()
 
 print("Программа создаёт параметры окна...")
+class NoEnterTextEdit(QTextEdit):
+    def keyPressEvent(self, event):
+        if event.key() in [Qt.Key_Enter, Qt.Key_Return]:
+            return  # Просто игнорируем событие при нажатии Enter
+        super().keyPressEvent(event)
+print("Программа создаёт новую")
 
 def adding_mode():
     
@@ -39,6 +46,11 @@ def adding_mode():
         print("Программа создаёт новую функцию...")
         
         if button == button_box.button(QDialogButtonBox.Ok):
+            def push_ent_for_add(e):
+                push_add.click()
+            keyboard.on_press_key("enter", push_ent_for_add)
+            print("Программа создаёт обработчика событий по клавиатуре...")
+            
             sign.hide()
             print("Надпись прячется...")
             button_box.hide()
@@ -57,7 +69,8 @@ def adding_mode():
             add_user_text.show()
             print("Программа создаёт текстовое поле с информацией и его параметры...")
             
-            add_user_in_list = QTextEdit(dialog)
+        
+            add_user_in_list = NoEnterTextEdit(dialog)
             add_user_in_list.setGeometry(70,70,111,31)
             add_user_in_list.show()
             print("Программа создаёт поле для ввода и его параметры...")
@@ -66,21 +79,11 @@ def adding_mode():
             push_add.show()
             print("Программа создаёт кнопку подтверждения и его параметры...")
             def if_but_press():
+                special_characters = ['№', '"', '!', '%', '@', '#', '$', '^', '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '<', '>', ',', '.', '?', '/', '`', '~']
+                print("Программа создаёт список со специальными значениями...")
                 username = add_user_in_list.toPlainText()
                 print("Программа создаёт новую переменную в которой будет передана информация из add_user_in_list...")
-                if username != "":
-                    combobox.clear()
-                    users.append(username)
-                    print("Программа добавляет в список новую информацию...")
-                    save_users(users)
-                    print("Программа сохраняет список...")
-                    add_user_in_list.clear()
-                    print("Программа очищает содержимое объекта QTextEdit...")
-                    for user in users:
-                        combobox.addItem(user)
-                        print("Программа обновляет информацию об списках...")
-                
-                else:
+                if username == "":
                     print("Ошибка! В QTextEdit, нету никакой информации...")
                     dialog.setWindowTitle("Error!")
                     print("Программа изменяет названия диалогового окна на \"Error\"...")
@@ -110,6 +113,106 @@ def adding_mode():
                         
                     ok_to_close.clicked.connect(dia_close)
                     print("Функция по закрытию кнопки активируется...")
+                elif any(char in special_characters for char in username):
+                    print("Данные которые ввёл пользователь содержат недопустимые значения...")
+                    
+                    dialog.setWindowTitle("Error!")
+                    print("Программа изменяет названия диалогового окна на \"Error\"...")
+                    dialog_icon = QIcon("Error.png")
+                    print("Программа применяет новую иконку...")
+                    dialog.setWindowIcon(dialog_icon)
+                    
+                    add_user_in_list.hide()
+                    push_add.hide()
+                    print("Программа прячет кнопки...")
+                    
+                    add_user_text.setText("Вы ввели недопустимые значения! Пользователь не может быть добавлен, попробуйте снова")
+                    add_user_text.setGeometry(20,50,211,51)
+                    print("Программа изменяет параметры add_user_text...")
+                    
+                    ok_to_res = QPushButton("OK", dialog)
+                    ok_to_res.setGeometry(70,130,111,31)
+                    ok_to_res.show()
+                    print("Программа создаёт новую кнопку и применяет новые параметры к ней...")
+                    
+                    def res():
+                        dialog.setWindowTitle("Adding Mode")
+                        dialog_icon = QIcon("Icon.png")
+                        dialog.setWindowIcon(dialog_icon)
+                        print("Программа изменяет параметры окна dialog")
+                        
+                        add_user_text.setText("Введите сюда имя/фамилию человека которого вы хотите сюда добавить.")
+                        add_user_text.setGeometry(20,0,211,51)
+                        print("Программа применяет новые значения в add_user_text...")
+                        
+                        ok_to_res.hide()
+                        print("Программа прячет кнопку...")
+                        
+                        add_user_in_list.show()
+                        add_user_in_list.clear()
+                        print("Программа восстанавливает add_user_in_list...")
+                        push_add.show()
+                        print("Программа показывает push_add...")
+                    ok_to_res.clicked.connect(res)
+                    
+                elif username in users:
+                    print("Такой пользователь уже есть в списке!")
+                    def for_res2(e):
+                        ok_to_res2.click()
+                    keyboard.on_press_key("enter", for_res2)
+                    print("Программа создаёт поддержку клавиатуры для данной функции...")
+                    
+                    add_user_in_list.hide()
+                    push_add.close()
+                    print("Программа прячет кнопки...")
+                    
+                    dialog.setWindowTitle("Error!")
+                    print("Программа изменяет названия диалогового окна на \"Error\"...")
+                    dialog_icon = QIcon("Error.png")
+                    print("Программа применяет новую иконку...")
+                    dialog.setWindowIcon(dialog_icon)
+                    
+                    add_user_text.setText("Данное имя уже есть в списке! Попробуйте заново.")
+                    add_user_text.setGeometry(20,50,211,51)
+                    print("Программа изменяет параметры объекта add_user_text...")
+                    
+                    ok_to_res2 = QPushButton("OK", dialog)
+                    ok_to_res2.setGeometry(70,130,111,31)
+                    ok_to_res2.show()
+                    print("Программа создаёт и применяет новые значения для кнопки....")
+                    def res2():
+                        dialog.setWindowTitle("Adding Mode")
+                        dialog_icon = QIcon("Icon.png")
+                        dialog.setWindowIcon(dialog_icon)
+                        print("Программа изменяет параметры окна dialog")
+                        
+                        add_user_text.setText("Введите сюда имя/фамилию человека которого вы хотите сюда добавить.")
+                        add_user_text.setGeometry(20,0,211,51)
+                        print("Программа применяет новые значения в add_user_text...")
+                        
+                        ok_to_res2.close()
+                        print("Программа закрывает кнопку...")
+                        
+                        add_user_in_list.show()
+                        add_user_in_list.clear()
+                        print("Программа восстанавливает add_user_in_list...")
+                        push_add.show()
+                        print("Программа показывает push_add...")
+                        
+                        
+                    ok_to_res2.clicked.connect(res2)
+                    
+                else:
+                    combobox.clear()
+                    users.append(username)
+                    print("Программа добавляет в список новую информацию...")
+                    save_users(users)
+                    print("Программа сохраняет список...")
+                    add_user_in_list.clear()
+                    print("Программа очищает содержимое объекта QTextEdit...")
+                    for user in users:
+                        combobox.addItem(user)
+                        print("Программа обновляет информацию об списках...")
             push_add.clicked.connect(if_but_press)
             dialog.exec_()
             
@@ -142,7 +245,7 @@ def del_user():
             
             dialog2 = QDialog()
             dialog2.resize(248,229)
-            dialog2.setWindowTitle("Adding Mode")
+            dialog2.setWindowTitle("Delete Mode")
             dialog_icon = QIcon("Icon.png")
             dialog2.setWindowIcon(dialog_icon)
             dialog2.setWindowFlags(dialog2.windowFlags() & ~Qt.WindowContextHelpButtonHint)
@@ -179,7 +282,42 @@ def del_user():
                         combobox.removeItem(index)
                     print("Программа обновляет информацию об списках...")
                 elif del_username != "" and del_username not in users:
-                    print("This feature temporary doesn't work.")
+                    print("Данного пользователя не существует")
+                    dialog2.setWindowTitle("Error")
+                    print("Программа применяет новое названия для объекта dialog2")
+                    dialog_icon2 = QIcon("Error.png")
+                    print("Программа применяет новую иконку для объекта dialog2")
+                    dialog2.setWindowIcon(dialog_icon2)
+                    
+                    del_user_text.setText("Ошибка! Даного пользоателя нету в списке, попробуйте заново.")
+                    del_user_text.setGeometry(20,50,211,51)
+                    print("Программа применяет новые параметры в del_user_text")
+                    
+                    del_button.hide()
+                    del_user_list.hide()
+                    print("Программа прячет кнопки...")
+                    
+                    ok_to_res = QPushButton("ОК", dialog2)
+                    ok_to_res.setGeometry(70,130,111,31)
+                    ok_to_res.show()
+                    print("Программа создаёт и применяет новые значения для кнопки...")
+                    
+                    def if_but_press():
+                        dialog2.setWindowTitle("Delete Mode")
+                        dialog_icon = QIcon("Icon.png")
+                        dialog2.setWindowIcon(dialog_icon)
+                        print("Программа возвращает параметры окна...")
+                        
+                        ok_to_res.hide()
+                        del_button.show()
+                        del_user_list.show()
+                        del_user_list.clear()
+                        print("Программа изменяет параметры кнопок...")
+                        
+                        del_user_text.setText("Введите сюда имя/фамилию человека которого вы удалить из списка.")
+                        del_user_text.setGeometry(20,0,211,51)
+                    ok_to_res.clicked.connect(if_but_press)
+                    
                 else:
                     print("Вы не ввели какие либо значения ")
                     dialog2.setWindowTitle("Error")
@@ -223,6 +361,8 @@ combobox = QComboBox(window)  # Создаем пустой QComboBox с род�
 print("combobox создаётся...")
 combobox.setGeometry(10, 1, 351, 51)
 print("Устанавливаются параметры для combobox...")
+
+
 
 for user in users:
     combobox.addItem(user)  # Добавляем элементы из списка users в combobox
