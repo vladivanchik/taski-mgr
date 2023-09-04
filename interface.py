@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QComboBox, QDialogButtonBox, QDialog, QTextBrowser, QTextEdit
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QComboBox, QDialogButtonBox, QDialog, QTextBrowser, QTextEdit, QCommandLinkButton
+from PyQt5.QtGui import QIcon, QPixmap, QPainter
 from PyQt5.QtCore import Qt
 from main import save_users
 from main import users
@@ -157,20 +157,17 @@ def adding_mode():
                     
                 elif username in users:
                     print("Такой пользователь уже есть в списке!")
-                    def for_res2(e):
-                        ok_to_res2.click()
-                    keyboard.on_press_key("enter", for_res2)
-                    print("Программа создаёт поддержку клавиатуры для данной функции...")
+                    
+                    dialog.setWindowTitle("Error!")
+                    print("Программа изменяет названия диалогового окна на \"Error\"...")
+                    dialog_icon = QIcon("Error.png")
+                    dialog.setWindowIcon(dialog_icon)
+                    print("Программа применяет новую иконку...")
                     
                     add_user_in_list.hide()
                     push_add.close()
                     print("Программа прячет кнопки...")
                     
-                    dialog.setWindowTitle("Error!")
-                    print("Программа изменяет названия диалогового окна на \"Error\"...")
-                    dialog_icon = QIcon("Error.png")
-                    print("Программа применяет новую иконку...")
-                    dialog.setWindowIcon(dialog_icon)
                     
                     add_user_text.setText("Данное имя уже есть в списке! Попробуйте заново.")
                     add_user_text.setGeometry(20,50,211,51)
@@ -190,8 +187,8 @@ def adding_mode():
                         add_user_text.setGeometry(20,0,211,51)
                         print("Программа применяет новые значения в add_user_text...")
                         
-                        ok_to_res2.close()
-                        print("Программа закрывает кнопку...")
+                        ok_to_res2.hide()
+                        print("Программа прячет кнопку...")
                         
                         add_user_in_list.show()
                         add_user_in_list.clear()
@@ -199,20 +196,59 @@ def adding_mode():
                         push_add.show()
                         print("Программа показывает push_add...")
                         
-                        
                     ok_to_res2.clicked.connect(res2)
                     
                 else:
-                    combobox.clear()
-                    users.append(username)
-                    print("Программа добавляет в список новую информацию...")
-                    save_users(users)
-                    print("Программа сохраняет список...")
-                    add_user_in_list.clear()
-                    print("Программа очищает содержимое объекта QTextEdit...")
-                    for user in users:
-                        combobox.addItem(user)
-                        print("Программа обновляет информацию об списках...")
+                    dialog.setWindowTitle("Warning")
+                    print("Программа изменяет названия диалогового окна на \"Warning\"...")
+                    dialog_icon = QIcon("Warning.png")
+                    dialog.setWindowIcon(dialog_icon)
+                    print("Программа применяет новую иконку...")
+                    
+                    add_user_in_list.hide()
+                    push_add.close()
+                    print("Программа прячет кнопки...")
+                    
+                    
+                    add_user_text.setText("Вы точно хотите добавить пользователя " + username + "?")
+                    add_user_text.setGeometry(20,50,211,51)
+                    
+                    ok_to_res2 = QPushButton("Да", dialog)
+                    ok_to_res2.setGeometry(70,130,111,31)
+                    ok_to_res2.show()
+                    print("Программа создаёт и применяет новые значения для кнопки....")
+                    
+                    def res2():
+                        combobox.clear()
+                        users.append(username)
+                        print("Программа добавляет в список новую информацию...")
+                        save_users(users)
+                        print("Программа сохраняет список...")
+                        add_user_in_list.clear()
+                        print("Программа очищает содержимое объекта QTextEdit...")
+                        for user in users:
+                            combobox.addItem(user)
+                            print("Программа обновляет информацию об списках...")
+                        
+                        dialog.setWindowTitle("Adding Mode")
+                        dialog_icon = QIcon("Icon.png")
+                        dialog.setWindowIcon(dialog_icon)
+                        print("Программа изменяет параметры окна dialog")
+                        
+                        add_user_text.setText("Введите сюда имя/фамилию человека которого вы хотите сюда добавить.")
+                        add_user_text.setGeometry(20,0,211,51)
+                        print("Программа применяет новые значения в add_user_text...")
+                        
+                        ok_to_res2.hide()
+                        print("Программа прячет кнопку...")
+                        
+                        add_user_in_list.show()
+                        add_user_in_list.clear()
+                        print("Программа восстанавливает add_user_in_list...")
+                        push_add.show()
+                        print("Программа показывает push_add...")
+                        
+                    ok_to_res2.clicked.connect(res2)
             push_add.clicked.connect(if_but_press)
             dialog.exec_()
             
@@ -222,7 +258,7 @@ def adding_mode():
             button_box.close()
             print("Кнопка закрывается...")
     button_box.clicked.connect(Ok_canl)
-def del_user():     
+def del_user():  
     del_sign = QTextBrowser(window)
     del_sign.setText("Вы точно хотите удалить пользователя из списка?")
     del_sign.setGeometry(295,200,156,31)
@@ -238,6 +274,9 @@ def del_user():
     print("Программа создаёт интерактивные кнопки, а также их параметры...")
     def ok_but(button):
         if button == del_but.button(QDialogButtonBox.Ok):
+            def push_ent_for_del(e):
+                del_button.click()
+            keyboard.on_press_key("enter", push_ent_for_del)
             del_sign.hide()
             print("Программа прячет надпись...")
             del_but.hide()
@@ -258,7 +297,7 @@ def del_user():
             del_user_text.show()
             print("Программа создаёт текстовое поле с информацией и его параметры...")
             
-            del_user_list = QTextEdit(dialog2)
+            del_user_list = NoEnterTextEdit(dialog2)
             del_user_list.setGeometry(70,70,111,31)
             del_user_list.show()
             print("Программа создаёт поле для ввода и его параметры...")
@@ -270,17 +309,54 @@ def del_user():
             def if_but_press_to_del():
                 del_username = del_user_list.toPlainText()
                 if del_username in users:
-                    users.remove(del_username)
-                    print("Программа удаляет содержимое списка...")
-                    save_users(users)
-                    print("Программа сохраняет список...")
-                    del_user_list.clear()
-                    print("Программа очищает содержимое объекта QTextEdit...")
-                    # Получаем индекс элемента в combobox по его значению (имени пользователя)
-                    index = combobox.findText(del_username)
-                    if index != -1:
-                        combobox.removeItem(index)
-                    print("Программа обновляет информацию об списках...")
+                    dialog2.setWindowTitle("Warning")
+                    print("Программа изменяет названия диалогового окна на \"Warning\"...")
+                    dialog_icon = QIcon("Warning.png")
+                    dialog2.setWindowIcon(dialog_icon)
+                    print("Программа изменяет параметры окна...")
+                
+                    del_user_text.setText("Вы точно хотите удалить пользователя " + del_username + "? Данное действие невозможно отменить!")
+                    del_user_text.setGeometry(20,50,211,51)
+                    print("Программа применяет новые параметры для del_user_text")
+                    
+                    del_button.hide()
+                    del_user_list.hide()
+                    print("Программа прячет кнопки...")
+                    
+                    ok_to_res = QPushButton("ОК", dialog2)
+                    ok_to_res.setGeometry(70,130,111,31)
+                    ok_to_res.show()
+                    print("Программа создаёт и применяет новые значения для кнопки...")
+                    
+                    def if_but_press():
+                        users.remove(del_username)
+                        print("Программа удаляет содержимое списка...")
+                        save_users(users)
+                        print("Программа сохраняет список...")
+                        del_user_list.clear()
+                        print("Программа очищает содержимое объекта QTextEdit...")
+                        # Получаем индекс элемента в combobox по его значению (имени пользователя)
+                        index = combobox.findText(del_username)
+                        if index != -1:
+                            combobox.removeItem(index)
+                        print("Программа обновляет информацию об списках...")
+                        
+                        dialog2.setWindowTitle("Delete Mode")
+                        dialog_icon = QIcon("Icon.png")
+                        dialog2.setWindowIcon(dialog_icon)
+                        print("Программа возвращает параметры окна...")
+                        
+                        ok_to_res.hide()
+                        del_button.show()
+                        del_user_list.show()
+                        del_user_list.clear()
+                        print("Программа изменяет параметры кнопок...")
+                        
+                        del_user_text.setText("Введите сюда имя/фамилию человека которого вы удалить из списка.")
+                        del_user_text.setGeometry(20,0,211,51)
+                    ok_to_res.clicked.connect(if_but_press)
+                    
+                
                 elif del_username != "" and del_username not in users:
                     print("Данного пользователя не существует")
                     dialog2.setWindowTitle("Error")
@@ -362,8 +438,6 @@ print("combobox создаётся...")
 combobox.setGeometry(10, 1, 351, 51)
 print("Устанавливаются параметры для combobox...")
 
-
-
 for user in users:
     combobox.addItem(user)  # Добавляем элементы из списка users в combobox
     print("Программа добавляет элементы из списка...")
@@ -371,13 +445,18 @@ for user in users:
 add_user = QPushButton("Добавить нового пользователя", window) #Создаём кнопку которая позволяет добавить нового пользователя
 add_user.setGeometry(370, 0, 191, 51)
 add_user.clicked.connect(adding_mode)
-print("Кнопка создаётся и задаются параметры...")
+print("Программа создаёт кнопку и задаёт новые параметры...")
     
 delete_user = QPushButton("Удалить пользователя", window)
-delete_user.setGeometry(570, 0, 211, 51)
+delete_user.setGeometry(570, 0, 191, 51)
 delete_user.clicked.connect(del_user)
-print("Кнопка создаётся и задаются параметры...")
-    
+print("Программа создаёт кнопку и задаёт новые параметры...")
+
+calculate_of_profit = QCommandLinkButton("Рассчитать прибыль данного водителя", window)
+calculate_of_profit.setGeometry(10,55,340,41)
+calculate_of_profit.show()
+print("Программа создаёт кнопку и задаёт новые параметры...")
+
 combobox.show()
 add_user.show()
 delete_user.show()
