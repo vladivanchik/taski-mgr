@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Добавить нового пользователя</string>
+     <string>Додати нового користувача</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBox">
@@ -38,7 +38,7 @@
     </property>
     <item>
      <property name="text">
-      <string>Владислав Иванов</string>
+      <string>Владислав Іванов</string>
      </property>
     </item>
     <item>
@@ -48,7 +48,7 @@
     </item>
     <item>
      <property name="text">
-      <string>Виктор Толмачёв</string>
+      <string>Віктор Толмачов</string>
      </property>
     </item>
    </widget>
@@ -57,12 +57,25 @@
      <rect>
       <x>570</x>
       <y>0</y>
-      <width>211</width>
+      <width>201</width>
       <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>Удалить пользователя</string>
+     <string>Видалити користувача</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Разрахувати  прибуток водія</string>
     </property>
    </widget>
   </widget>
