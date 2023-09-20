@@ -252,7 +252,7 @@ def del_user():
             combobox_to_del.hide()
             but_to_del.hide()
             print("Програма ховає об'єкти")
-            text_from_combobox = combobox_to_del.currentText() # Отримуємо текст з combobox_to_del
+            text_from_combobox= combobox_to_del.currentText() # Отримуємо текст з combobox_to_del
             
             dialog.setWindowTitle("Warning!")
             dialog_icon = QIcon("Warning.png")
@@ -263,13 +263,47 @@ def del_user():
             sign.setGeometry(20,40,211,51)
             print("Програма змінює параметри об'єкта...")
             
-            ok_canl = QDialogButtonBox(dialog)
-            ok_canl.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-            ok_canl.setGeometry(50,130,151,23)
-            ok_canl.show()
+            button_box = QDialogButtonBox(dialog)
+            button_box.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+            button_box.setGeometry(50,130,151,23)
+            button_box.show()
             print("Програма створює нову кнопку, та задає параметри для неї...")
             
-            
+            def ok_canl_press(button):
+                if button == button_box.button(QDialogButtonBox.Ok):
+                    users.remove(text_from_combobox)
+                    save_users(users)
+                    print("Програма видаляє, та збережує нові дані...")
+                    
+                    index = combobox.findText(text_from_combobox)
+                    if index != 1:
+                        combobox.removeItem(index)
+                    print("Програма оновлює інформацію в combobox")
+                    combobox_to_del.clear()
+                    for user in users:
+                        combobox_to_del.addItem(user)
+                    print("Програма оновлює інформацію про combobox_to_del...")
+        
+                    button_box.hide()
+                    print("Програма ховає кнопку...")
+                    combobox_to_del.show()
+                    but_to_del.show()
+                    print("Програма показує об'єкти...")
+                    
+                    sign.setText("Виберіть якого користувача ви хочете видалити.")
+                    sign.setGeometry(20,0,211,51)
+                    print("Програма змінює параметри вікна...")
+                    
+                    dialog.setWindowTitle("Delete Mode")
+                    dialog_icon = QIcon("Icon.png")
+                    dialog.setWindowIcon(dialog_icon)
+                    print("Програма змінює параметри вікна...")
+                    
+                elif button == button_box.button(QDialogButtonBox.Cancel):
+                    dialog.close()
+                    print("Програма закриває вікно...")
+            button_box.clicked.connect(ok_canl_press)
+                
                         
         else:
             combobox_to_del.hide()
