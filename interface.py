@@ -327,7 +327,7 @@ def del_user():
             
     but_to_del.clicked.connect(but_press)
     dialog.exec_()
-def func_calculate_of_profit():
+def func_of_adding_car():
     print("Програма створює нову функцію...")
     
     dialog3 = QDialog()
@@ -338,109 +338,95 @@ def func_calculate_of_profit():
     dialog3.setWindowFlags(dialog3.windowFlags() & ~Qt.WindowContextHelpButtonHint) # Ховає кнопку підказок у вікні dialog
     print("Програма створює нове вікно і його параметри...")
     
-    calculate_of_profit_text = QTextBrowser(dialog3)
-    calculate_of_profit_text.setText("Введіть нижче ім'я та прізвище людини, для якої ви хочете разрахувати прибуток.")
-    calculate_of_profit_text.setGeometry(20,0,211,51)
-    calculate_of_profit_text.show()
+    add_car_sign = QTextBrowser(dialog3)
+    add_car_sign.setText("Виберіть нижче ім'я людини, для якої ви хочете додати авто на якому він їздить.")
+    add_car_sign.setGeometry(20,0,211,51)
+    add_car_sign.show()
     print("Програма створює текстове поле з інформацією та його параметри...")
     
-    calculate_of_profit_list = QTextEdit(dialog3)
-    calculate_of_profit_list.setGeometry(70,70,111,31)
-    calculate_of_profit_list.show()
-    print("Програма створює поле для введення і його параметри...")
+    combobox_for_car = QComboBox(dialog3)
+    combobox_for_car.setGeometry(35,70,180,40)
+    for user in users:
+        combobox_for_car.addItem(user)
+    combobox_for_car.show()
+    print("Програма створює новий combobox, та задає параметри для нього")
     
-    ent_button = QPushButton("Розрахувати прибуток для водія", dialog3)
+    
+    ent_button = QPushButton("Додати автівку...", dialog3)
     ent_button.setGeometry(30,130,190,23)
     ent_button.show()
     print("Програма створює нову кнопку та властивосіт для неї...")
     
-    def func_net_income():
-        username = calculate_of_profit_list.toPlainText()
-        if username in users:
-            calculate_of_profit_text.setText("Нижче введіть чистий дохід водія " + username)
-            calculate_of_profit_list.clear()
-            ent_button.close()
-            print("Програма змінила налаштування для деяких кнопок...")
+    def if_but_press():
+        print("Програма створює нову функцію...")
+        index = combobox_for_car.currentIndex() #Видобувоєму потичний індекс з combobox_for_car
+        if index != -1:
+            current_user = combobox_for_car.currentText() #Видобувоєму текст з combobox_for_car
+            combobox_for_car.hide()
+            ent_button.hide()
             
-            button = QPushButton("Ввести значення" ,dialog3)
-            button.setGeometry(40,130,170,23)
-            button.show()
-            print("Програма створює нову кнопку, а також параметри для неї...")
-            def func_spent_fuel():
-                net_income = calculate_of_profit_list.toPlainText()
-                if net_income.isdigit():
-                    calculate_of_profit_text.setText("Нижче введіть скільки водій витратив на пальне...")
-                    calculate_of_profit_list.clear()
-                    button.close()
-                    print("Програма змінює параметри для кнопок...")
-                    
-                    button2 = QPushButton("Ввести значення", dialog3)
-                    button2.setGeometry(40,130,170,23)
-                    button2.show()
-                    print("Програма створює нову кнопку та параметри для неї...")
-                    
-                else:
-                    dialog3.setWindowTitle("Error")
-                    dialog_icon = QIcon("Error.png")
+            dialog3.setWindowTitle("Warning!")
+            dialog_icon = QIcon("Warning.png")
+            dialog3.setWindowIcon(dialog_icon)
+            print("Програма змінює параметри для вікна...")
+            
+            add_car_sign.setText("Чи дійсно ви хочете додати нову автівку для користувача " + current_user + "?")
+            add_car_sign.setGeometry(20,40,211,51)
+            print("Програм змінює параметри для ")
+            
+            button_box = QDialogButtonBox(dialog3)
+            button_box.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+            button_box.setGeometry(50,130,151,23)
+            button_box.show()
+            print("Програма створює та задає нові параметри для button_box...")
+            def ok_canl(button):
+                if button == button_box.button(QDialogButtonBox.Ok):
+                    brands_of_cars = ["Ford", "Chevrolet", "Nissan", "Volkswagen", "Hyundai", "Kia", "Subaru", "Mazda", "Jeep", "Volvo", "Mitsubishi"]
+                    button_box.hide()
+                    dialog3.setWindowTitle("Adding Mode")
+                    dialog_icon = QIcon("Icon.png")
                     dialog3.setWindowIcon(dialog_icon)
                     print("Програма змінює параметри вікна...")
-            
-                    calculate_of_profit_text.setText("Помилка! налючюються неприпустіми значення, спробуйте заново(вводіть значення тільки з цифрами)")
-                    calculate_of_profit_text.setGeometry(20,40,211,51)
-                    calculate_of_profit_list.hide()
-                    print("Програма змінює значення в кнопках...")
                     
-                    ok_to_close = QPushButton("Ок", dialog3)
-                    ok_to_close.setGeometry(40,130,170,23)
-                    ok_to_close.show()
-                    print("Програма створює нову кнопку, та параметри для неї...")
+                    add_car_sign.setText("Нижче напишиить назву машини яку ви хочете додати до водія " + current_user)
+                    add_car_sign.setGeometry(20,0,211,51)
+                    print("Програма змінює параметри для напису add_car_sign...")
                     
-                    def if_but_press():
-                        dialog3.close()
-                        print("Програма закриває вікно та всі об'єкти...")
-                    ok_to_close.clicked.connect(if_but_press)
-            button.clicked.connect(func_spent_fuel)
+                    
+                    
+                    ent_button.setText("Додати")
+                    ent_button.show()
+                    print("Програма змінює, та показує кнопку ent_button...")
+                    
+                    
+                else:
+                    dialog3.close()
+                    print("Програма закриває вікно...")
+            button_box.clicked.connect(ok_canl)
             
         else:
-            dialog3.setWindowTitle("Error")
+            combobox_for_car.hide()
+            print("Програма ховає необхідні об'єкти...")
+            
+            dialog3.setWindowTitle("Error!")
             dialog_icon = QIcon("Error.png")
             dialog3.setWindowIcon(dialog_icon)
             print("Програма змінює параметри вікна...")
             
-            calculate_of_profit_text.setText("Даного користувача немає у списку, спробуйте знову")
-            calculate_of_profit_text.setGeometry(20,40,211,51)
-            ent_button.close()
-            calculate_of_profit_list.hide()
-            print("Програма змінює параметри кнопок...")
-            
-            ok_to_close = QPushButton("Ок", dialog3)
-            ok_to_close.setGeometry(40,130,170,23)
-            ok_to_close.show()
-            print("Програма створює нову кнопку, та задає параметри для неї...")
+            add_car_sign.setText("Помилка! у списку немає жодного користувача, спробуйте спочатку додати водія, а потім додати автівку на котрій він їздить.")
+            add_car_sign.setGeometry(20,40,211,51)
+            print("Програма змінює параметри add_car_sign...")    
+        
+            ent_button.setText("Ок")
+            print("Програма змінює параметри для ent_button...")
             
             def if_but_press():
-                dialog3.setWindowTitle("Calculating Mode")
-                dialog_icon = QIcon("Icon.png")
-                dialog3.setWindowIcon(dialog_icon)
-                print("Програма змінює параметри вікна...")
-                
-                calculate_of_profit_text.setText("Введіть нижче ім'я та прізвище людини, для якої ви хочете разрахувати прибуток.")
-                calculate_of_profit_text.setGeometry(20,0,211,51)
-                print("Програма змінює параметри для об'єкта calculate_of_profit_text...")
-                
-                calculate_of_profit_list.clear()
-                calculate_of_profit_list.show()
-                print("Програма змінює параметри для вікна calculate_of_profit_list...")
-                
-                ent_button.show()
-                ok_to_close.close()
-                print("Програма змінює параметри для об'єктів")
-                
-            ok_to_close.clicked.connect(if_but_press)
-    
-    ent_button.clicked.connect(func_net_income)
+                dialog3.close()
+                print("Програма закриває вікно...")
+            ent_button.clicked.connect(if_but_press)
+            
+    ent_button.clicked.connect(if_but_press)
     dialog3.exec_()
-    
 combobox = QComboBox(window)  # Створюємо порожній QComboBox з батьком window
 print("combobox створюється...")
 combobox.setGeometry(10, 1, 351, 51)
@@ -460,10 +446,10 @@ delete_user.setGeometry(570, 0, 191, 51)
 delete_user.clicked.connect(del_user)
 print("Програма створює кнопку і задає нові параметри...")
 
-calculate_of_profit = QCommandLinkButton("Розрахувати прибуток водія", window)
-calculate_of_profit.setGeometry(5,55,340,41)
-calculate_of_profit.show()
-calculate_of_profit.clicked.connect(func_calculate_of_profit)
+adding_car = QCommandLinkButton("Додати нову автівку", window)
+adding_car.setGeometry(5,55,340,41)
+adding_car.show()
+adding_car.clicked.connect(func_of_adding_car)
 print("Програма створює кнопку і задає нові параметри...")
 
     
