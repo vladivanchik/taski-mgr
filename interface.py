@@ -381,7 +381,8 @@ def func_of_adding_car():
             print("Програма створює та задає нові параметри для button_box...")
             def ok_canl(button):
                 if button == button_box.button(QDialogButtonBox.Ok):
-                    brands_of_cars = ["Ford", "Chevrolet", "Nissan", "Volkswagen", "Hyundai", "Kia", "Subaru", "Mazda", "Jeep", "Volvo", "Mitsubishi"]
+                    cars = ["Toyota", "Ford", "Chevrolet", "Honda", "Volkswagen", "Nissan", "Mercedes-Benz", "BMW", "Audi", "Hyundai", "Kia", "Lexus", "Volvo", "Mitsubishi", "Subaru", "Jeep", "Tesla", "Porsche", "Ferrari", "Lamborghini"]
+                    years = [str(year) for year in range(1980, 2024)] # Конвертуємо year у рядок, та перечислюємо всі числа від 1980, до 2023(включно)
                     button_box.hide()
                     dialog3.setWindowTitle("Adding Mode")
                     dialog_icon = QIcon("Icon.png")
@@ -392,12 +393,70 @@ def func_of_adding_car():
                     add_car_sign.setGeometry(20,0,211,51)
                     print("Програма змінює параметри для напису add_car_sign...")
                     
+                    brands_car_combo = QComboBox(dialog3)
+                    brands_car_combo.setGeometry(20,70,100,31)
+                    for car in cars:
+                        brands_car_combo.addItem(car)
+                    brands_car_combo.show()
+                    print("Програма створює новий combobox, та задає параметри...")
                     
+                    year_of_car_combo = QComboBox(dialog3)
+                    year_of_car_combo.setGeometry(50,110,151,23)
+                    for year in years:
+                        year_of_car_combo.addItem(year)
+                    year_of_car_combo.show()
+                    print("Програма створює новий список")
+                    
+                    
+                    add_car_edit = QTextEdit(dialog3)
+                    add_car_edit.setGeometry(130,70,100,31)
+                    add_car_edit.show()
+                    print("Програма створює новий об'єкт, та задає параметри для нього")
                     
                     ent_button.setText("Додати")
+                    ent_button.setGeometry(30,150,190,23)
                     ent_button.show()
                     print("Програма змінює, та показує кнопку ent_button...")
                     
+                    def if_but_press():
+                        brand_car = add_car_edit.toPlainText() #Видубовуємо інформацію з edit, та передаємо її у змінну brand_car
+                        if brand_car == "":
+                            add_car_edit.hide()
+                            
+                            dialog3.setWindowTitle("Error!")
+                            dialog_icon = QIcon("Error.png")
+                            dialog3.setWindowIcon(dialog_icon)
+                            print("Програма змінює параметри вікна...")
+                            
+                            add_car_sign.setText("Помилка! Ви не ввели ніяких значень, спробуйте заново.")
+                            add_car_sign.setGeometry(70,70,111,31)
+                            print("Програма змінює параметри вікна...")
+                            
+                            ent_button.setText("Ок")
+                            print("Програма змінює параметри у ent_button")
+                            
+                            def but_press():
+                                dialog3.close()
+                        else:
+                            add_car_edit.hide()
+                            brands_car_combo.hide()
+                            year_of_car_combo.hide()
+                            print("Програма ховає об'єкті...")
+                            name_from_combobox = combobox_for_car.currentText() # Вибудовуємо текст з combobox_for_car, та передаємо його у іншу змінну
+                            text_from_combobox = brands_car_combo.currentText() # Вибудовуємо текст з brands_car_combo, та передаємо його у іншу змінну
+                            name_brand_from_edit = add_car_edit.toPlainText() # Вибудовуємо текст з add_car_edit, та передаємо його у іншу змінну
+                            years_of_car = year_of_car_combo.currentText() # Вибудовуємо текст  year_of_car_combo, та передаємо його у іншу змінну
+                            
+                            dialog3.setWindowTitle("Warning!")
+                            dialog_icon = QIcon("Warning.png")
+                            dialog3.setWindowIcon(dialog_icon)
+                            print("Програма змінює параметри вікна...")
+                            
+                            add_car_sign.setText("Ци дійсно ви хочете застосувати автівку " + years_of_car + " року виробництва " + text_from_combobox + " " + name_brand_from_edit + " до користувача " + name_from_combobox + "?")
+                            add_car_sign.setGeometry(20,50,211,51)
+
+                            ent_button.clicked.connect(but_press)
+                    ent_button.clicked.connect(if_but_press)
                     
                 else:
                     dialog3.close()
