@@ -328,164 +328,82 @@ def del_user():
     but_to_del.clicked.connect(but_press)
     dialog.exec_()
 def func_of_adding_car():
-    print("Програма створює нову функцію...")
-    
-    dialog3 = QDialog()
-    dialog3.resize(248,229)
-    dialog3.setWindowTitle("Calculating Mode")
+    dialog = QDialog()
+    dialog.resize(248,229)
+    dialog.setWindowTitle("Adding Mode")
     dialog_icon = QIcon("Icon.png")
-    dialog3.setWindowIcon(dialog_icon)
-    dialog3.setWindowFlags(dialog3.windowFlags() & ~Qt.WindowContextHelpButtonHint) # Ховає кнопку підказок у вікні dialog
-    print("Програма створює нове вікно і його параметри...")
+    dialog.setWindowIcon(dialog_icon)
+    dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+    print("Програма створює нове вікно та задає параметри для нього...")
     
-    add_car_sign = QTextBrowser(dialog3)
-    add_car_sign.setText("Виберіть нижче ім'я людини, для якої ви хочете додати авто на якому він їздить.")
-    add_car_sign.setGeometry(20,0,211,51)
-    add_car_sign.show()
-    print("Програма створює текстове поле з інформацією та його параметри...")
+    message_text = QTextBrowser(dialog)
+    message_text.setText("Нижче виберіть людину з поданого списку, для якої ви хочете додати автівку...")
+    message_text.setGeometry(20,0,211,51)
+    print("Програма створює нову функцію, та задає параметри для неї...")
     
-    combobox_for_car = QComboBox(dialog3)
-    combobox_for_car.setGeometry(35,70,180,40)
+    
+    combo_user = QComboBox(dialog)
     for user in users:
-        combobox_for_car.addItem(user)
-    combobox_for_car.show()
-    print("Програма створює новий combobox, та задає параметри для нього")
+        combo_user.addItem(user) # Програма буде додавати кожного користувача зі списка, по черзі
+    combo_user.setGeometry(35,70,180,40)
+    combo_user.show()
+    print("Програма створює новий combobox, та задає параметри для нього...")
     
-    
-    ent_button = QPushButton("Додати автівку...", dialog3)
-    ent_button.setGeometry(30,130,190,23)
-    ent_button.show()
-    print("Програма створює нову кнопку та властивосіт для неї...")
+    push_button = QPushButton("Вибрати", dialog)
+    push_button.setGeometry(50,130,151,23)
+    push_button.show()
+    print("Програма створює нову кнопку, та параметри для неї...")
     
     def if_but_press():
-        print("Програма створює нову функцію...")
-        index = combobox_for_car.currentIndex() #Видобувоєму потичний індекс з combobox_for_car
+        index = combo_user.currentIndex() # Вибудовуємо індекс з combo_user
+        current_text = combo_user.currentText() # Вибудовуємо даний текст з combo_user
         if index != -1:
-            current_user = combobox_for_car.currentText() #Видобувоєму текст з combobox_for_car
-            combobox_for_car.hide()
-            ent_button.hide()
+            combo_user.hide()
+            push_button.hide()
+            print("Програма ховає непотрібні об'єкти...")
             
-            dialog3.setWindowTitle("Warning!")
-            dialog_icon = QIcon("Warning.png")
-            dialog3.setWindowIcon(dialog_icon)
-            print("Програма змінює параметри для вікна...")
+            dialog.setWindowTitle("Warning!")
+            app_icon = QIcon("Warning.png")
+            dialog.setWindowIcon(app_icon)
+            print("Програма змінює параметри вікна...")
             
-            add_car_sign.setText("Чи дійсно ви хочете додати нову автівку для користувача " + current_user + "?")
-            add_car_sign.setGeometry(20,40,211,51)
-            print("Програм змінює параметри для ")
+            message_text.setText("Ви впевнені що хочете додати автівку? Вона застосується до користувача " + current_text)
+            message_text.setGeometry(35,55,180,53)
+            print("Програма змінює параметри об'єкта...")
             
-            button_box = QDialogButtonBox(dialog3)
+            button_box = QDialogButtonBox(dialog)
             button_box.setStandardButtons(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
             button_box.setGeometry(50,130,151,23)
             button_box.show()
-            print("Програма створює та задає нові параметри для button_box...")
-            def ok_canl(button):
+            print("Програма створює новий об'єкт та задає параметри для нього...")
+            def but_press(button):
                 if button == button_box.button(QDialogButtonBox.Ok):
-                    cars = ["Toyota", "Ford", "Chevrolet", "Honda", "Volkswagen", "Nissan", "Mercedes-Benz", "BMW", "Audi", "Hyundai", "Kia", "Lexus", "Volvo", "Mitsubishi", "Subaru", "Jeep", "Tesla", "Porsche", "Ferrari", "Lamborghini"]
-                    years = [str(year) for year in range(1980, 2024)] # Конвертуємо year у рядок, та перечислюємо всі числа від 1980, до 2023(включно)
-                    button_box.hide()
-                    dialog3.setWindowTitle("Adding Mode")
-                    dialog_icon = QIcon("Icon.png")
-                    dialog3.setWindowIcon(dialog_icon)
-                    print("Програма змінює параметри вікна...")
-                    
-                    add_car_sign.setText("Нижче напишиить назву машини яку ви хочете додати до водія " + current_user)
-                    add_car_sign.setGeometry(20,0,211,51)
-                    print("Програма змінює параметри для напису add_car_sign...")
-                    
-                    brands_car_combo = QComboBox(dialog3)
-                    brands_car_combo.setGeometry(20,70,100,31)
-                    for car in cars:
-                        brands_car_combo.addItem(car)
-                    brands_car_combo.show()
-                    print("Програма створює новий combobox, та задає параметри...")
-                    
-                    year_of_car_combo = QComboBox(dialog3)
-                    year_of_car_combo.setGeometry(50,110,151,23)
-                    for year in years:
-                        year_of_car_combo.addItem(year)
-                    year_of_car_combo.show()
-                    print("Програма створює новий список")
-                    
-                    
-                    add_car_edit = QTextEdit(dialog3)
-                    add_car_edit.setGeometry(130,70,100,31)
-                    add_car_edit.show()
-                    print("Програма створює новий об'єкт, та задає параметри для нього")
-                    
-                    ent_button.setText("Додати")
-                    ent_button.setGeometry(30,150,190,23)
-                    ent_button.show()
-                    print("Програма змінює, та показує кнопку ent_button...")
-                    
-                    def if_but_press():
-                        brand_car = add_car_edit.toPlainText() #Видубовуємо інформацію з edit, та передаємо її у змінну brand_car
-                        if brand_car == "":
-                            add_car_edit.hide()
-                            
-                            dialog3.setWindowTitle("Error!")
-                            dialog_icon = QIcon("Error.png")
-                            dialog3.setWindowIcon(dialog_icon)
-                            print("Програма змінює параметри вікна...")
-                            
-                            add_car_sign.setText("Помилка! Ви не ввели ніяких значень, спробуйте заново.")
-                            add_car_sign.setGeometry(70,70,111,31)
-                            print("Програма змінює параметри вікна...")
-                            
-                            ent_button.setText("Ок")
-                            print("Програма змінює параметри у ent_button")
-                            
-                            def but_press():
-                                dialog3.close()
-                        else:
-                            add_car_edit.hide()
-                            brands_car_combo.hide()
-                            year_of_car_combo.hide()
-                            print("Програма ховає об'єкті...")
-                            name_from_combobox = combobox_for_car.currentText() # Вибудовуємо текст з combobox_for_car, та передаємо його у іншу змінну
-                            text_from_combobox = brands_car_combo.currentText() # Вибудовуємо текст з brands_car_combo, та передаємо його у іншу змінну
-                            name_brand_from_edit = add_car_edit.toPlainText() # Вибудовуємо текст з add_car_edit, та передаємо його у іншу змінну
-                            years_of_car = year_of_car_combo.currentText() # Вибудовуємо текст  year_of_car_combo, та передаємо його у іншу змінну
-                            
-                            dialog3.setWindowTitle("Warning!")
-                            dialog_icon = QIcon("Warning.png")
-                            dialog3.setWindowIcon(dialog_icon)
-                            print("Програма змінює параметри вікна...")
-                            
-                            add_car_sign.setText("Ци дійсно ви хочете застосувати автівку " + years_of_car + " року виробництва " + text_from_combobox + " " + name_brand_from_edit + " до користувача " + name_from_combobox + "?")
-                            add_car_sign.setGeometry(20,50,211,51)
-
-                            ent_button.clicked.connect(but_press)
-                    ent_button.clicked.connect(if_but_press)
-                    
-                else:
-                    dialog3.close()
-                    print("Програма закриває вікно...")
-            button_box.clicked.connect(ok_canl)
-            
+                    pass    
+                elif button == button_box.button(QDialogButtonBox.Cancel):
+                    pass
+            button_box.clicked.connect(but_press)
         else:
-            combobox_for_car.hide()
-            print("Програма ховає необхідні об'єкти...")
+            combo_user.hide()
             
-            dialog3.setWindowTitle("Error!")
-            dialog_icon = QIcon("Error.png")
-            dialog3.setWindowIcon(dialog_icon)
-            print("Програма змінює параметри вікна...")
+            dialog.setWindowTitle("Error!")
+            app_icon = QIcon("Error.png")
+            dialog.setWindowIcon(app_icon)
             
-            add_car_sign.setText("Помилка! у списку немає жодного користувача, спробуйте спочатку додати водія, а потім додати автівку на котрій він їздить.")
-            add_car_sign.setGeometry(20,40,211,51)
-            print("Програма змінює параметри add_car_sign...")    
-        
-            ent_button.setText("Ок")
-            print("Програма змінює параметри для ent_button...")
+            message_text.setText("Помилка! Ви не вибрали жодного користувача зі списку, спробуйте заново.")
+            message_text.setGeometry(35,55,180,53)
+            print("Програма змінює параметри для об'єкту...")
             
-            def if_but_press():
-                dialog3.close()
+            push_button.setText("Ок")
+            
+            def close():
+                dialog.close()
                 print("Програма закриває вікно...")
-            ent_button.clicked.connect(if_but_press)
+            push_button.clicked.connect(close)
             
-    ent_button.clicked.connect(if_but_press)
-    dialog3.exec_()
+    push_button.clicked.connect(if_but_press)
+    
+    dialog.exec_()
+    
 combobox = QComboBox(window)  # Створюємо порожній QComboBox з батьком window
 print("combobox створюється...")
 combobox.setGeometry(10, 1, 351, 51)
