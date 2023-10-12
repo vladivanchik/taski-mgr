@@ -378,9 +378,53 @@ def func_of_adding_car():
             print("Програма створює новий об'єкт та задає параметри для нього...")
             def but_press(button):
                 if button == button_box.button(QDialogButtonBox.Ok):
-                    pass    
+                    years = [str(year) for year in range(1980, 2024)] # Конвертуємо year у рядок, та перечислюємо всі числа від 1980, до 2023(включно)
+                    brands = ["Audi", "BMW", "Chevrolet", "Citroen", "Dodge", "Fiat", "Ford", "Honda", "Hyundai", "Jeep", "Kia", "Mazda", "Mercedes-Benz", "Mitsubishi", "Nissan", "Opel", "Peugeot", "Renault", "Skoda", "Subaru", "Suzuki", "Toyota", "Volkswagen", "Volvo"]
+                    
+                    button_box.hide()
+                    
+                    dialog.setWindowTitle("Adding Mode")
+                    app_icon = QIcon("Icon.png")
+                    dialog.setWindowIcon(app_icon)
+                    print("Програма змінює параметри параметри вікна...")
+                    
+                    message_text.setText("Нижче введіть марку машини, рік її випуску, модель, та її вартість.")
+                    message_text.setGeometry(20,0,211,51)
+                    print("Програма змінює параметри для message_text")
+                    
+                    combo_brand = QComboBox(dialog)
+                    for brand in brands:
+                        combo_brand.addItem(brand) # Створюємо аргумент котрий буде "доставати" кожний бренд автівки, та вставляти його у combobox
+                    combo_brand.setGeometry(20,70,100,31)
+                    combo_brand.show()
+                    print("Програма створює новий об'єкт та задає параметри йому...")
+                    
+                    edit_model = QTextEdit(dialog)
+                    edit_model.setGeometry(130,70,100,31)
+                    edit_model.show()
+                    print("Програма створює новий об'єкт та задає йому параметри...")
+                    
+                    
+                    combo_year = QComboBox(dialog)
+                    for year in years:
+                        combo_year.addItem(year) # Створюємо аргумент котрий буде "доставати" кожний рік автівки, та вставляти його у combobox
+                    combo_year.setGeometry(35,110,70,23)
+                    combo_year.show()
+                    print("Програма створює новий combobox")
+                    
+                    price_edit = QTextEdit(dialog)
+                    initial_data = "$"
+                    price_edit.setPlainText(initial_data)
+                    price_edit.setGeometry(145,110,70,23)
+                    price_edit.show()
+                    
+                    push_to_add = QPushButton("Додати", dialog)
+                    push_to_add.setGeometry(30,150,190,23)
+                    push_to_add.show()
+                    
+                    
                 elif button == button_box.button(QDialogButtonBox.Cancel):
-                    pass
+                    dialog.close()
             button_box.clicked.connect(but_press)
         else:
             combo_user.hide()
