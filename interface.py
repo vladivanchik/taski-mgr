@@ -422,6 +422,26 @@ def func_of_adding_car():
                     push_to_add.setGeometry(30,150,190,23)
                     push_to_add.show()
                     
+                    def confirm():
+                        sel_price = price_edit.toPlainText() # Вибудовуємо інформацію про те скільки автівка коштує
+                        sel_model = edit_model.toPlainText() # Вибудовуємо інформацію по те яка наразі модель автівки вибрана
+                        if sel_price != "$" and sel_price != "" and sel_model != "":
+                            sel_brand = combo_brand.currentText() # Вибудовуємо інформацію про те яка наразі автівка вибрана
+                            sel_year = combo_year.currentText() # Вибудовуємо інформацію про те якого року випуска машина
+                            
+                            push_to_add.hide()
+                            combo_brand.hide()
+                            edit_model.hide()
+                            combo_year.hide()
+                            price_edit.hide()
+                            print("Програма ховає необхідні компоненти...")
+                            
+                            message_text.setText("Чи дійсно ви хочете додати до користувача " + current_text + ", автівку " + sel_brand + " " + sel_model + " " + sel_year + " року випуску, та вартістю у " + sel_price + " ?")
+                            message_text.setGeometry(35,55,180,53)
+                        else:
+                            print("Помилка!")
+                    push_to_add.clicked.connect(confirm)
+                    
                     
                 elif button == button_box.button(QDialogButtonBox.Cancel):
                     dialog.close()
